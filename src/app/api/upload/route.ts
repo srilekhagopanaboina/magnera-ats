@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { uploadResume } from '@/lib/supabase'
+import { put } from '@vercel/blob'
 import { prisma } from '@/lib/prisma'
 import { checkRateLimit } from '@/lib/rate-limit'
 import { headers } from 'next/headers'
@@ -32,18 +32,20 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'File size must be under 10MB' }, { status: 400 })
     }
 
-    const buffer = Buffer.from(await file.arrayBuffer())
-    const safeFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_')
-    const resumeUrl = await uploadResume(buffer, safeFileName, file.type)
+    const safeFileName = `resumes/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`
+    const blob = await put(safeFileName, file, {
+      access: 'public',
+      contentType: file.type,
+    })
 
     if (applicantId) {
       await prisma.applicant.update({
         where: { id: applicantId },
-        data: { resumeUrl, resumeFileName: file.name },
+        data: { resumeUrl: blob.url, resumeFileName: file.name },
       })
     }
 
-    return NextResponse.json({ success: true, url: resumeUrl, fileName: file.name })
+    return NextResponse.json({ success: true, url: blob.url, fileName: file.name })
   } catch (error) {
     console.error('Upload error:', error)
     return NextResponse.json({ error: 'Failed to upload file' }, { status: 500 })
