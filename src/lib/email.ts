@@ -1,6 +1,10 @@
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+let _resend: Resend | null = null
+function getResend() {
+  if (!_resend) _resend = new Resend(process.env.RESEND_API_KEY ?? 're_placeholder')
+  return _resend
+}
 
 const FROM_EMAIL = 'noreply@magnera.com'
 const ADMIN_EMAIL = 'admin@magnera.com'
@@ -13,7 +17,7 @@ export async function sendApplicationConfirmation(applicant: {
   jobTitle?: string | null
 }) {
   try {
-    await resend.emails.send({
+    await getResend().emails.send({
       from: FROM_EMAIL,
       to: applicant.email,
       subject: `Application Received - ${COMPANY_NAME}`,
@@ -66,7 +70,7 @@ export async function sendNewApplicationAlert(applicant: {
 }) {
   try {
     const adminUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
-    await resend.emails.send({
+    await getResend().emails.send({
       from: FROM_EMAIL,
       to: ADMIN_EMAIL,
       subject: `New Application: ${applicant.firstName} ${applicant.lastName}`,
@@ -115,7 +119,7 @@ export async function sendStatusUpdateEmail(applicant: {
   if (!message) return
 
   try {
-    await resend.emails.send({
+    await getResend().emails.send({
       from: FROM_EMAIL,
       to: applicant.email,
       subject: `Application Update - ${COMPANY_NAME}`,
