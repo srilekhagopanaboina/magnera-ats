@@ -76,6 +76,11 @@ export default function ApplicantDetail({ applicant: initialApplicant }: { appli
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Field label="Email" value={applicant.email} link={`mailto:${applicant.email}`} />
             <Field label="Phone" value={applicant.phone} link={applicant.phone ? `tel:${applicant.phone}` : undefined} />
+            <Field label="Street Address" value={applicant.addressStreet} />
+            <Field label="Unit / Apt" value={applicant.addressUnit} />
+            <Field label="City" value={applicant.addressCity} />
+            <Field label="State / Province" value={applicant.addressState} />
+            <Field label="ZIP / Postal Code" value={applicant.addressZip} />
             <Field label="LinkedIn" value={applicant.linkedinUrl ? 'View Profile' : undefined} link={applicant.linkedinUrl ?? undefined} />
             <Field label="Portfolio" value={applicant.portfolioUrl ? 'View Portfolio' : undefined} link={applicant.portfolioUrl ?? undefined} />
             <Field label="Years of Experience" value={applicant.yearsExperience !== null && applicant.yearsExperience !== undefined ? `${applicant.yearsExperience} years` : undefined} />

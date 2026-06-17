@@ -82,6 +82,11 @@ model Applicant {
   lastName            String
   email               String
   phone               String?
+  addressStreet       String
+  addressUnit         String
+  addressCity         String
+  addressState        String
+  addressZip          String
   linkedinUrl         String?
   portfolioUrl        String?
   currentTitle        String?

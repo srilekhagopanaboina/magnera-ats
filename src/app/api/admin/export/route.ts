@@ -33,6 +33,7 @@ export async function GET(request: NextRequest) {
 
   const headers = [
     'ID', 'First Name', 'Last Name', 'Email', 'Phone',
+    'Street Address', 'Unit / Apt', 'City', 'State / Province', 'ZIP / Postal Code',
     'LinkedIn', 'Portfolio', 'Current Title', 'Current Company',
     'Years Experience', 'Skills', 'Summary',
     'Current Salary', 'Expected Salary', 'Salary Negotiable',
@@ -47,6 +48,11 @@ export async function GET(request: NextRequest) {
     a.lastName,
     a.email,
     a.phone,
+    a.addressStreet,
+    a.addressUnit,
+    a.addressCity,
+    a.addressState,
+    a.addressZip,
     a.linkedinUrl,
     a.portfolioUrl,
     a.currentTitle,

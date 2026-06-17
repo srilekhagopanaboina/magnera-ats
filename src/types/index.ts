@@ -23,6 +23,11 @@ export interface Applicant {
   lastName: string
   email: string
   phone?: string | null
+  addressStreet: string
+  addressUnit: string
+  addressCity: string
+  addressState: string
+  addressZip: string
   linkedinUrl?: string | null
   portfolioUrl?: string | null
   currentTitle?: string | null

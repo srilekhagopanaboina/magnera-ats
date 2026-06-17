@@ -12,6 +12,11 @@ const schema = z.object({
   lastName: z.string().min(1, 'Last name is required'),
   email: z.string().email('Valid email required'),
   phone: z.string().optional(),
+  addressStreet: z.string().min(1, 'Street address is required'),
+  addressUnit: z.string().min(1, 'Required — enter N/A if not applicable'),
+  addressCity: z.string().min(1, 'City is required'),
+  addressState: z.string().min(1, 'State / province is required'),
+  addressZip: z.string().min(1, 'ZIP / postal code is required'),
   linkedinUrl: z.string().url('Must be a valid URL').optional().or(z.literal('')),
   portfolioUrl: z.string().url('Must be a valid URL').optional().or(z.literal('')),
   jobTitle: z.string().optional(),
@@ -55,7 +60,7 @@ export default function ApplicationForm() {
   })
 
   const sectionFields: Record<number, (keyof FormData)[]> = {
-    0: ['firstName', 'lastName', 'email', 'phone', 'linkedinUrl', 'portfolioUrl'],
+    0: ['firstName', 'lastName', 'email', 'phone', 'addressStreet', 'addressUnit', 'addressCity', 'addressState', 'addressZip', 'linkedinUrl', 'portfolioUrl'],
     1: ['jobTitle', 'currentTitle', 'currentCompany', 'yearsExperience', 'skills', 'summary'],
     2: ['currentSalary', 'expectedSalary', 'salaryNegotiable'],
     3: ['workAuthorization', 'requiresSponsorship'],
@@ -152,6 +157,24 @@ export default function ApplicationForm() {
               <FormField label="Phone Number" error={errors.phone?.message}>
                 <input {...register('phone')} type="tel" placeholder="+1 (555) 000-0000" className={inputClass(!!errors.phone)} />
               </FormField>
+              <FormField label="Street Address *" error={errors.addressStreet?.message}>
+                <input {...register('addressStreet')} placeholder="123 Main St" className={inputClass(!!errors.addressStreet)} />
+              </FormField>
+              <FormField label="Unit / Apartment Number *" error={errors.addressUnit?.message}>
+                <input {...register('addressUnit')} placeholder="Apt 4B" className={inputClass(!!errors.addressUnit)} />
+                <p className="mt-1 text-xs text-gray-500">Required — enter N/A if not applicable</p>
+              </FormField>
+              <FormField label="City *" error={errors.addressCity?.message}>
+                <input {...register('addressCity')} placeholder="New York" className={inputClass(!!errors.addressCity)} />
+              </FormField>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <FormField label="State / Province *" error={errors.addressState?.message}>
+                  <input {...register('addressState')} placeholder="NY" className={inputClass(!!errors.addressState)} />
+                </FormField>
+                <FormField label="ZIP / Postal Code *" error={errors.addressZip?.message}>
+                  <input {...register('addressZip')} placeholder="10001" className={inputClass(!!errors.addressZip)} />
+                </FormField>
+              </div>
               <FormField label="LinkedIn Profile URL" error={errors.linkedinUrl?.message}>
                 <input {...register('linkedinUrl')} placeholder="https://linkedin.com/in/yourprofile" className={inputClass(!!errors.linkedinUrl)} />
               </FormField>
